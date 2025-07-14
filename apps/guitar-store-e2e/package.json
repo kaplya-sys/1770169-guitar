@@ -1,0 +1,26 @@
+{
+  "name": "@1770169-guitar/guitar-store-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "guitar-store-e2e",
+    "implicitDependencies": [
+      "guitar-store"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps/guitar-store-e2e/jest.config.ts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "guitar-store:build"
+        ]
+      }
+    }
+  }
+}
