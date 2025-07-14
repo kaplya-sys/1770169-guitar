@@ -8,6 +8,33 @@
     },
     {
       "path": "./apps/guitar-store"
+    },
+    {
+      "path": "./libs/shared/rdo"
+    },
+    {
+      "path": "./libs/shared/types"
+    },
+    {
+      "path": "./libs/shared/dto"
+    },
+    {
+      "path": "./libs/shared/helpers"
+    },
+    {
+      "path": "./libs/shared/query"
+    },
+    {
+      "path": "./libs/config"
+    },
+    {
+      "path": "./libs/core"
+    },
+    {
+      "path": "./libs/models"
+    },
+    {
+      "path": "./libs/swagger"
     }
   ]
 }
