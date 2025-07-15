@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+enum GuitarType {
+  acoustic
+  electro
+  ukulele
+}
+
+enum GuitarStrings {
+  four
+  six
+  seven
+  twelve
+}
+
+enum Role {
+  user
+  admin
+}
+
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["strictUndefinedChecks"]
+  output          = "../src/lib/generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Guitars {
+  id          String        @id @default(uuid())
+  title       String        @db.VarChar(100)
+  image       String        @db.Char(36)
+  date        DateTime      @default(now())
+  type        GuitarType
+  stringCount GuitarStrings @map("string_count")
+  article     String        @db.VarChar(40)
+  description String        @db.VarChar(1024)
+  price       Int
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("guitars")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  name            String            @db.VarChar(15)
+  email           String            @unique @db.VarChar(40)
+  password        String            @db.VarChar(60)
+  role            Role?             @default(admin)
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  refreshSessions RefreshSessions[]
+
+  @@map("users")
+}
+
+model RefreshSessions {
+  id        String   @id @default(uuid())
+  tokenId   String   @unique @map("token_id") @db.Char(36)
+  userId    String   @map("user_id") @db.Char(36)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresIn DateTime @map("expires_in")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("refresh-sessions")
+}

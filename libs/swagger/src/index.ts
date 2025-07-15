@@ -1,1 +1,1 @@
-export * from './lib/swagger.js';
+export * from './lib/swagger';
