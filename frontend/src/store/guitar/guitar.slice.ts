@@ -1,26 +1,18 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {Guitar, GuitarString, GuitarType, NameSpace} from '../../libs/shared/types';
+import {Guitar} from '@1770169-guitar/types';
+
+import {NameSpace} from '../../libs/shared/types';
 import {createGuitarAction, getGuitarAction, removeGuitarAction, updateGuitarAction} from '../api-actions/guitar.api-actions';
 
 type InitialState = {
-  guitar: Guitar;
+  guitar: Guitar | null;
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: InitialState = {
-  guitar: {
-    id: '',
-    title: '',
-    article: '',
-    stringCount: GuitarString.Four,
-    description: '',
-    price: 0,
-    type: GuitarType.Acoustic,
-    date: new Date().toISOString(),
-    image: ''
-  },
+  guitar: null,
   isLoading: false,
   error: null
 };

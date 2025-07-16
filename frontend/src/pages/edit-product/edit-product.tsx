@@ -8,20 +8,26 @@ import {DATE_FORMAT, GUITAR_STRINGS_NAMES, GUITAR_TYPE_NAMES} from '../../libs/s
 import {formattingNumber, setDefaultFormat, validateFields} from '../../libs/shared/helpers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {selectGuitar, updateGuitarAction} from '../../store';
+import {getImagesPath} from '@1770169-guitar/helpers';
 
 export const EditProduct = () => {
-  const guitarsData = useAppSelector(selectGuitar);
+  const guitar = useAppSelector(selectGuitar);
+
+  if (!guitar) {
+    return null;
+  }
+  const {image} = getImagesPath(guitar.image);
   const [data, setData] = useState<CreateGuitar>({
-    title: guitarsData.title,
-    article: guitarsData.article,
-    type: guitarsData.type,
-    description: guitarsData.description,
-    stringCount: guitarsData.stringCount,
-    price: guitarsData.price.toString(),
+    title: guitar.title,
+    article: guitar.article,
+    type: guitar.type,
+    description: guitar.description,
+    stringCount: guitar.stringCount,
+    price: guitar.price.toString(),
     image: null,
-    date: dayjs(guitarsData.date).format(DATE_FORMAT)
+    date: dayjs(guitar.date).format(DATE_FORMAT)
   });
-  const [selectedImage, setSelectedImage] = useState<string>('');
+  const [selectedImage, setSelectedImage] = useState<string>(image);
   const [error, setError] = useState<Partial<Record<keyof CreateGuitar, string>>>({});
   const fileRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -61,7 +67,7 @@ export const EditProduct = () => {
       if (data.image) {
         formData.append('file', data.image);
       }
-      dispatch(updateGuitarAction({formData, id: guitarsData.id}))
+      dispatch(updateGuitarAction({formData, id: guitar.id as string}))
     } else {
       setError(newError);
     }

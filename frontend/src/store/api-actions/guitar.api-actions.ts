@@ -1,7 +1,8 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-import {FormDataWithPayload, Guitar, PaginatedResponse, RequestOptionsType} from '../../libs/shared/types';
+import {FormDataWithPayload,PaginatedResponse,RequestOptionsType} from '../../libs/shared/types';
+import { Guitar } from '@1770169-guitar/types';
 
 export const getGuitarsAction = createAsyncThunk<PaginatedResponse<Guitar>, RequestOptionsType, {
   extra: AxiosInstance;

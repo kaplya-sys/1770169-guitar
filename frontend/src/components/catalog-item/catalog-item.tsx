@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 
 import {Guitar} from '@1770169-guitar/types';
+import {getImagesPath} from '@1770169-guitar/helpers';
 
 type CatalogItemProps = {
   guitar: Guitar;
@@ -8,21 +9,14 @@ type CatalogItemProps = {
 }
 
 export const CatalogItem = ({guitar, onRemoveClick}: CatalogItemProps) => {
-  let guitarImage = '';
-  let guitarImage2x = '';
-
-  if (typeof guitar.image === 'object') {
-    const {file, file2x} = guitar.image;
-    guitarImage = file.path;
-    guitarImage2x = file2x.path;
-  }
+  const {image, image2x} = getImagesPath(guitar.image)
 
   return (
   <li className="catalog-item">
     <div className="catalog-item__data">
       <img
-        src={guitarImage}
-        srcSet={guitarImage2x}
+        src={image}
+        srcSet={`${image2x} 2x`}
         width="36"
         height="93"
         alt={guitar.title}

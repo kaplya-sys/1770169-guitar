@@ -1,19 +1,23 @@
-import {RouteObject} from 'react-router-dom';
+import {LoaderFunctionArgs, RouteObject} from 'react-router-dom';
 
 import {PrivateRoute} from '../../components/private-route';
 import {Products} from '../../pages/products';
 import {SignUp} from '../../pages/sign-up';
 import {SignIn} from '../../pages/sign-in';
-import {ProductCard} from '../../pages/product-card';
+import {Product} from '../../pages/product';
 import {AddProduct} from '../../pages/add-product/add-product';
 import {EditProduct} from '../../pages/edit-product/edit-product';
 import {NotFound} from '../../pages/not-found';
 import {BREADCRUMBS_NAMES} from '../shared/constant';
-import {AppRoute} from '../shared/types';
+import {AppRoute, Params} from '../shared/types';
 import {Layout} from '../../components/layout';
+import {useAppDispatch} from '../../hooks';
+import {getGuitarAction} from '../../store';
 
-import {useAppSelector} from '../../hooks';
-import {selectGuitars} from '../../store';
+const productLoader = async({params}: LoaderFunctionArgs<Params>) => {
+  const dispatch = useAppDispatch();
+  return dispatch(getGuitarAction({id: params.id}));
+}
 
 export const routes: RouteObject[] = [
   {
@@ -32,14 +36,16 @@ export const routes: RouteObject[] = [
       {
         path: AppRoute.Products,
         element: (
-          <PrivateRoute>
+          <PrivateRoute isAdminOnly={true}>
             <Products/>
           </PrivateRoute>
         ),
         children: [
           {
             path: AppRoute.Product,
-            element: <ProductCard/>,
+            element: <Product/>,
+            loader: productLoader,
+            lazy: () => import('../../pages/product').then(module => ({Component: module.Product})),
             handle: BREADCRUMBS_NAMES.product
           },
           {

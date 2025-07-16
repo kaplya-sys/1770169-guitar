@@ -1,5 +1,5 @@
 import {CatalogItem} from '../catalog-item';
-import {Guitar} from '../../libs/shared/types';
+import {Guitar} from '@1770169-guitar/types';
 
 type CatalogProps = {
   guitars: Guitar[];

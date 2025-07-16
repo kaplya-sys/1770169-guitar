@@ -10,7 +10,7 @@ import {
   VALUE_PARSE_ERROR,
   WRONG_TIME_ERROR
 } from './helpers.constant';
-import {BufferVariant, DateTimeUnit, MongooseConfig, TimeAndUnit} from '@1770169-guitar/types';
+import {BufferVariant, DateTimeUnit, Image, MongooseConfig, TimeAndUnit} from '@1770169-guitar/types';
 
 export function fillDto<T, P>(dto: new () => T, plainObject: P, options?: ClassTransformOptions): T;
 
@@ -75,3 +75,20 @@ export async function convertFileBuffer(file: Buffer): Promise<BufferVariant> {
 }
 
 export const normalizePath = (value: string): string =>  sep === '\\' ? value.replace(/\\/g, '/') : value;
+
+export const isImage = (value: unknown): value is Image =>
+  value !== null
+  && typeof value === 'object'
+  && 'file' in value
+  && 'file2x' in value;
+
+export const getImagesPath = (value: unknown) =>
+  isImage(value) ?
+  ({
+    image: value.file.path,
+    image2x: value.file2x.path
+  }) :
+  ({
+    image: '',
+    image2x: ''
+  })

@@ -1,15 +1,23 @@
 import {MouseEvent, useState} from 'react';
 import classNames from 'classnames';
 
+import {getImagesPath} from '@1770169-guitar/helpers';
+
 import {Breadcrumbs} from '../../components/breadcrumbs';
 import {GUITAR_TYPE_NAMES} from '../../libs/shared/constant';
 import {ProductDetail} from '../../libs/shared/types';
-import { useAppSelector } from '../../hooks';
-import { selectGuitar } from '../../store';
+import {useAppSelector} from '../../hooks';
+import {selectGuitar} from '../../store';
 
-export const ProductCard = () => {
-  const [viewDescription, setViewDescription] = useState<boolean>(false);
+export const Product = () => {
   const guitar = useAppSelector(selectGuitar);
+
+  if (!guitar) {
+    return null;
+  }
+  const [viewDescription, setViewDescription] = useState<boolean>(false);
+
+  const {image, image2x} = getImagesPath(guitar.image)
 
   const handleToggleClick = (evt: MouseEvent<HTMLAnchorElement>, type: ProductDetail) => {
     evt.preventDefault();
@@ -29,8 +37,8 @@ export const ProductCard = () => {
         <div className="product-container">
           <img
             className="product-container__img"
-            src={`img/content/${guitar.image}`}
-            srcSet={`img/content/${guitar.image}@2x.png 2x`}
+            src={image}
+            srcSet={`${image2x} 2x`}
             width="90"
             height="235"
             alt={guitar.title}
